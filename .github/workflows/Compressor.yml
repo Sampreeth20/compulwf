@@ -12,6 +12,11 @@ jobs:
        - name: Checkout
          uses: actions/checkout@main
        
+       - uses: styfle/cancel-workflow-action@0.9.0
+         name: "Cancel duplicate workflow runs"
+         with:
+            all_but_latest: true
+            access_token: ${{ github.token }}
        - name: initialization
          continue-on-error: true
          run: |
@@ -24,7 +29,7 @@ jobs:
        - name: cloning repo
          continue-on-error: true
          run: |
-           git clone -b main https://Sampreeth20:${{ secrets.GH_TOKEN }}@github.com/Sampreeth20/manual-encoder.git
+           git clone -b main https://Sampreeth20:${{ secrets.GH_TOKEN }}@github.com/Sampreeth20/manual-encoder
        - name: Running PrivateEncoderV2.0 Bot 
          timeout-minutes: 350
          continue-on-error: true
@@ -35,9 +40,9 @@ jobs:
        - name: Loop workflow
          continue-on-error: true
          run: |
-           git clone https://${{ secrets.GH_TOKEN }}@github.com/${LIMK} loop
+           git clone https://${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} loop
            cd loop || exit 1
            echo $(( RANDOM - ( RANDOM % RANDOM ) )) > looper.txt
            git add looper.txt
            git commit -m "Workflow : Loop at $(date -u +%D-%T%P)"
-           git push -q https://${{ secrets.GH_TOKEN }}@github.com/${LIMK} HEAD:main
+           git push -q https://${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} HEAD:main
